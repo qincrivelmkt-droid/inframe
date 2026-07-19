@@ -88,10 +88,25 @@
     font-weight: 300;
   }
   .hero-image {
-    background:
-      linear-gradient(rgba(28,26,23,0.05), rgba(28,26,23,0.15)),
-      url('hero.jpg') center/cover no-repeat;
     min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .hero-image video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(28,26,23,0.05), rgba(28,26,23,0.15));
+    pointer-events: none;
   }
 
   .cta-primary {
@@ -400,9 +415,6 @@
     .hero-image {
       min-height: 420px;
       order: -1;
-      background:
-        linear-gradient(rgba(28,26,23,0.1), rgba(28,26,23,0.25)),
-        url('hero.jpg') center/cover no-repeat;
     }
     .hero-text {
       padding: 60px 28px 70px;
@@ -443,7 +455,11 @@
     </a>
     <span class="sub-cue">Resposta em minutos · Sem compromisso</span>
   </div>
-  <div class="hero-image" role="img" aria-label="Álbum Inframe em um casamento"></div>
+  <div class="hero-image">
+    <video id="heroVideo" autoplay muted playsinline preload="metadata" aria-label="Álbum Inframe em um casamento">
+      <source src="essevideo.mp4" type="video/mp4">
+    </video>
+  </div>
 </section>
 
 <!-- VÍDEO EMOTIVO (portrait) -->
@@ -509,7 +525,7 @@
     <h2 class="section-title">O álbum aberto pela primeira vez.</h2>
     <p class="section-lead">Assista o instante em que o guestbook chega nas mãos dos noivos, ainda dentro do casamento.</p>
     <div class="portrait-video" style="max-width: 340px;">
-      <video controls preload="metadata" playsinline>
+      <video autoplay muted loop playsinline controls preload="metadata">
         <source src="video-guestbook.mp4" type="video/mp4">
       </video>
     </div>
@@ -527,9 +543,9 @@
   <div class="carousel-wrap">
     <div class="carousel-track" id="feedbackCarousel">
       <figure class="feedback-slide"><img src="feedback4.jpeg" alt="Feedback recebido no WhatsApp" loading="lazy" /></figure>
-      <figure class="feedback-slide"><img src="feedback2.jpeg" alt="Feedback recebido no WhatsApp" loading="lazy" /></figure>
-      <figure class="feedback-slide"><img src="feedback3.jpeg" alt="Feedback recebido no WhatsApp" loading="lazy" /></figure>
       <figure class="feedback-slide"><img src="feedback1.jpeg" alt="Feedback recebido no WhatsApp" loading="lazy" /></figure>
+      <figure class="feedback-slide"><img src="feedback3.jpeg" alt="Feedback recebido no WhatsApp" loading="lazy" /></figure>
+      <figure class="feedback-slide"><img src="feedback2.jpeg" alt="Feedback recebido no WhatsApp" loading="lazy" /></figure>
     </div>
 
     <div class="carousel-controls">
@@ -578,6 +594,15 @@
     };
     prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
     next.addEventListener('click', () => track.scrollBy({ left:  step(), behavior: 'smooth' }));
+
+    // Hero video: reproduzir uma vez e travar no ultimo frame
+    const heroVid = document.getElementById('heroVideo');
+    if (heroVid) {
+      heroVid.addEventListener('ended', function() {
+        heroVid.pause();
+        try { heroVid.currentTime = Math.max(0, heroVid.duration - 0.05); } catch(e){}
+      });
+    }
   })();
 </script>
 
