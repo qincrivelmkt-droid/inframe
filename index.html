@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inframe | A memória do seu casamento em cada Polaroid</title>
+<meta name="description" content="Guestbook de fotos instantâneas Polaroid para casamentos. Cada convidado tira uma foto e deixa uma mensagem. Você leva o álbum pra casa no mesmo dia." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5efe6;
+    --cream-light: #faf6f0;
+    --ink: #1c1a17;
+    --ink-soft: #4a453f;
+    --gold: #b08d57;
+    --gold-soft: #d4b896;
+    --whatsapp: #25d366;
+    --whatsapp-dark: #128c7e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .narrow { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header {
+    padding: 28px 0;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+  }
+  .brand {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    letter-spacing: 0.35em;
+    color: var(--ink);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* HERO - split layout preservando qualidade */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    background: var(--cream);
+  }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 60px 60px;
+  }
+  .hero-text .eyebrow-hero {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .hero-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero-text h1 em { font-style: italic; color: var(--gold); }
+  .hero-text p {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .hero-image {
+    background:
+      linear-gradient(rgba(28,26,23,0.05), rgba(28,26,23,0.15)),
+      url('imagens/imagem principal.jpeg') center/cover no-repeat;
+    min-height: 100vh;
+  }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--whatsapp);
+    color: white;
+    padding: 18px 34px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+    width: fit-content;
+  }
+  .cta-primary:hover {
+    background: var(--whatsapp-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37, 211, 102, 0.45);
+  }
+  .cta-primary svg { width: 22px; height: 22px; fill: currentColor; }
+  .sub-cue {
+    display: block;
+    margin-top: 18px;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.75;
+  }
+
+  /* Section base */
+  section { padding: 100px 0; }
+  .eyebrow {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-lead {
+    text-align: center;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto 60px;
+    font-weight: 300;
+  }
+
+  /* Vídeo emotivo (portrait) */
+  .video-block {
+    background: var(--ink);
+    padding: 90px 24px;
+    text-align: center;
+  }
+  .video-block .eyebrow { color: var(--gold-soft); }
+  .video-block h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--cream-light);
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.35;
+  }
+  .portrait-video {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 9 / 16;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    background: #000;
+  }
+  .portrait-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Como funciona */
+  .experience { background: var(--cream-light); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    margin-top: 40px;
+  }
+  .step { text-align: center; }
+  .step-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  .step h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .step p {
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    font-weight: 300;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  /* Galeria - grid uniforme portrait */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .gallery figure {
+    overflow: hidden;
+    border-radius: 6px;
+    aspect-ratio: 3 / 4;
+    background: var(--cream-light);
+  }
+  .gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .gallery figure:hover img { transform: scale(1.05); }
+
+  /* Vídeo guestbook (portrait) */
+  .guestbook-video {
+    background: var(--cream);
+    padding: 100px 0;
+    text-align: center;
+  }
+
+  /* Feedbacks CARROSSEL */
+  .feedbacks { background: var(--cream-light); overflow: hidden; }
+  .carousel-wrap {
+    position: relative;
+    margin-top: 20px;
+  }
+  .carousel-track {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 8px 24px 40px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .carousel-track::-webkit-scrollbar { display: none; }
+  .feedback-card {
+    flex: 0 0 min(440px, 85vw);
+    scroll-snap-align: center;
+    background: white;
+    padding: 44px 36px 40px;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(28, 26, 23, 0.07);
+    position: relative;
+  }
+  .feedback-card::before {
+    content: '"';
+    position: absolute;
+    top: 8px;
+    left: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 90px;
+    color: var(--gold-soft);
+    line-height: 1;
+    opacity: 0.55;
+  }
+  .feedback-card blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 16px 0 26px;
+    font-style: italic;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+  .feedback-card cite {
+    font-style: normal;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    display: block;
+  }
+  .feedback-card cite span {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .carousel-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-soft);
+    background: white;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+  }
+  .carousel-btn:hover {
+    background: var(--gold);
+    color: white;
+    border-color: var(--gold);
+  }
+  .carousel-btn svg { width: 18px; height: 18px; }
+  .carousel-hint {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  /* Prints reais */
+  .prints { background: var(--cream); padding: 40px 0 100px; }
+  .prints-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .prints-grid figure {
+    overflow: hidden;
+    border-radius: 8px;
+    aspect-ratio: 3 / 4;
+    background: var(--cream-light);
+    box-shadow: 0 8px 20px rgba(28, 26, 23, 0.08);
+    transition: transform 0.3s ease;
+  }
+  .prints-grid figure:hover { transform: translateY(-4px); }
+  .prints-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .prints .section-lead { font-size: 15px; margin-bottom: 32px; }
+
+  /* Final CTA */
+  .final-cta {
+    background: var(--ink);
+    color: var(--cream-light);
+    text-align: center;
+    padding: 120px 24px;
+  }
+  .final-cta .eyebrow { color: var(--gold-soft); }
+  .final-cta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.15;
+    max-width: 780px;
+    margin: 0 auto 20px;
+    letter-spacing: -0.015em;
+  }
+  .final-cta h2 em { font-style: italic; color: var(--gold-soft); }
+  .final-cta p {
+    font-size: 17px;
+    opacity: 0.85;
+    max-width: 560px;
+    margin: 0 auto 44px;
+    font-weight: 300;
+  }
+  .final-cta .cta-primary { margin: 0 auto; }
+
+  /* Footer */
+  footer {
+    background: var(--ink);
+    color: var(--cream-light);
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid rgba(245, 239, 230, 0.1);
+    font-size: 13px;
+    opacity: 0.7;
+  }
+  footer .brand-mini {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 1;
+  }
+
+  /* Floating WhatsApp */
+  .float-wa {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--whatsapp);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+    z-index: 100;
+    transition: transform 0.3s;
+  }
+  .float-wa:hover { transform: scale(1.08); }
+  .float-wa svg { width: 32px; height: 32px; fill: white; }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    section { padding: 70px 0; }
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero-image {
+      min-height: 420px;
+      order: -1;
+      background:
+        linear-gradient(rgba(28,26,23,0.1), rgba(28,26,23,0.25)),
+        url('imagens/imagem principal.jpeg') center/cover no-repeat;
+    }
+    .hero-text {
+      padding: 60px 28px 70px;
+      align-items: center;
+      text-align: center;
+    }
+    .hero-text p { margin-left: auto; margin-right: auto; }
+    .steps { grid-template-columns: 1fr; gap: 40px; }
+    .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .prints-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .final-cta { padding: 80px 20px; }
+    .brand { font-size: 20px; letter-spacing: 0.3em; }
+    .float-wa { width: 54px; height: 54px; bottom: 18px; right: 18px; }
+    .float-wa svg { width: 28px; height: 28px; }
+    .carousel-track { padding: 8px 16px 32px; gap: 16px; }
+    .feedback-card { padding: 36px 26px 32px; }
+    .feedback-card blockquote { font-size: 18px; }
+    .portrait-video { max-width: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="brand">Inframe</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow-hero">Inframe · Polaroid Guestbook</span>
+    <h1>O seu casamento merece ser <em>lembrado para sempre</em>.</h1>
+    <p>Fotos instantâneas Polaroid e mensagens dos convidados em um álbum entregue nas suas mãos no fim da festa. Uma memória física do dia mais importante da sua vida.</p>
+    <a href="https://wa.me/5548999999999?text=Ol%C3%A1%2C%20vim%20pela%20LP%20e%20quero%20saber%20mais%20sobre%20a%20Inframe" class="cta-primary" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Falar no WhatsApp
+    </a>
+    <span class="sub-cue">Resposta em minutos · Sem compromisso</span>
+  </div>
+  <div class="hero-image" role="img" aria-label="Álbum Inframe em um casamento"></div>
+</section>
+
+<!-- VÍDEO EMOTIVO (portrait) -->
+<section class="video-block">
+  <span class="eyebrow">A experiência Inframe</span>
+  <h2>Não é sobre uma foto. É sobre o momento em que ela é entregue e todo mundo pausa a festa pra olhar.</h2>
+  <div class="portrait-video">
+    <video autoplay muted loop playsinline preload="metadata">
+      <source src="vídeos/Vídeo emotivo.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="experience">
+  <div class="container">
+    <span class="eyebrow">Como funciona</span>
+    <h2 class="section-title">Três momentos, uma <em>memória inesquecível</em>.</h2>
+    <p class="section-lead">Simples pros seus convidados. Emocionante pra você.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Cada convidado tira sua foto</h3>
+        <p>A Polaroid revela na hora. Um clique, uma risada, um abraço. Tudo eternizado em papel.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Deixam uma mensagem para vocês</h3>
+        <p>Ao lado da foto, um recado escrito à mão. Palavras que ficam para sempre.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Vocês recebem o álbum no fim da festa</h3>
+        <p>Sim, no mesmo dia. Nas suas mãos. Pronto para ser aberto quantas vezes vocês quiserem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section>
+  <div class="container">
+    <span class="eyebrow">Casamentos que fizemos parte</span>
+    <h2 class="section-title">Cada álbum é uma <em>história diferente</em>.</h2>
+    <p class="section-lead">Registros reais de dias reais. Cada foto uma memória. Cada mensagem um pedaço do coração.</p>
+
+    <div class="gallery">
+      <figure><img src="imagens/foto stand inframe.jpeg" alt="Stand Inframe em casamento" loading="lazy" /></figure>
+      <figure><img src="imagens/fotos noifow.jpg" alt="Noivos com o álbum Inframe" loading="lazy" /></figure>
+      <figure><img src="imagens/WhatsApp Image 2026-07-19 at 11.51.31.jpeg" alt="Momento Inframe no casamento" loading="lazy" /></figure>
+      <figure><img src="imagens/WhatsApp Image 2026-07-19 at 12.28.33.jpeg" alt="Convidados no guestbook" loading="lazy" /></figure>
+      <figure><img src="imagens/WhatsApp Image 2026-07-19 at 12.31.22 (1).jpeg" alt="Álbum finalizado Inframe" loading="lazy" /></figure>
+      <figure><img src="imagens/imagem principal.jpeg" alt="Álbum Inframe finalizado" loading="lazy" /></figure>
+    </div>
+  </div>
+</section>
+
+<!-- VÍDEO GUESTBOOK (portrait) -->
+<section class="guestbook-video">
+  <div class="narrow">
+    <span class="eyebrow">O momento da entrega</span>
+    <h2 class="section-title">O álbum aberto pela primeira vez.</h2>
+    <p class="section-lead">Assista o instante em que o guestbook chega nas mãos dos noivos, ainda dentro do casamento.</p>
+    <div class="portrait-video" style="max-width: 340px;">
+      <video controls preload="metadata" playsinline>
+        <source src="vídeos/vídeo abrindo guestbook.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- FEEDBACKS CARROSSEL -->
+<section class="feedbacks">
+  <div class="container">
+    <span class="eyebrow">O que dizem os noivos</span>
+    <h2 class="section-title">Sem roteiro. Sem edição. <em>Só verdade.</em></h2>
+    <p class="section-lead">Arraste para o lado e conheça histórias reais de quem viveu a experiência Inframe.</p>
+  </div>
+
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="feedbackCarousel">
+      <div class="feedback-card">
+        <blockquote>Manu, você não sabe a diferença que vocês fizeram no meu casamento. Ter vocês ali foi maravilhoso. Sério, só tenho a agradecer.</blockquote>
+        <cite>Ana Prim <span>Noiva</span></cite>
+      </div>
+      <div class="feedback-card">
+        <blockquote>Quando você me entregou o quadro no final… sério, aquilo me pegou de um jeito. Ficou LINDO demais. Uma lembrança que vou guardar pra sempre.</blockquote>
+        <cite>Manu <span>Aniversariante</span></cite>
+      </div>
+      <div class="feedback-card">
+        <blockquote>Ficou tão lindo o álbum. Fiquei muito feliz que todos participaram, deixaram seu recado com tanto amor e carinho. E todos queriam mais e mais fotos.</blockquote>
+        <cite>Cliente Inframe <span>Casamento</span></cite>
+      </div>
+      <div class="feedback-card">
+        <blockquote>O trabalho de vocês é divino. Gostei muito das fotos e da presença de vocês no meu dia tão especial e memorável.</blockquote>
+        <cite>Luara <span>Debutante</span></cite>
+      </div>
+      <div class="feedback-card">
+        <blockquote>Ver as fotos ali junto com as mensagens deles, tudo organizado com tanto carinho. Deu pra ver o cuidado em cada detalhe.</blockquote>
+        <cite>Manu <span>Aniversariante</span></cite>
+      </div>
+    </div>
+
+    <div class="carousel-controls">
+      <button class="carousel-btn" id="prevBtn" aria-label="Anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="carousel-hint">Arraste para o lado</span>
+      <button class="carousel-btn" id="nextBtn" aria-label="Próximo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- PRINTS REAIS -->
+<section class="prints">
+  <div class="container">
+    <span class="eyebrow">Prints reais recebidos</span>
+    <p class="section-lead">Nada aqui é atuação. São mensagens que chegaram pra gente depois de cada casamento.</p>
+    <div class="prints-grid">
+      <figure><img src="feedbacks/feedback4.jpeg" alt="Feedback real de noiva" loading="lazy" /></figure>
+      <figure><img src="feedbacks/feedback2.jpeg" alt="Feedback real de cliente" loading="lazy" /></figure>
+      <figure><img src="feedbacks/feedback3.jpeg" alt="Feedback real de casamento" loading="lazy" /></figure>
+      <figure><img src="feedbacks/feedback1.jpeg" alt="Feedback real de aniversariante" loading="lazy" /></figure>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final-cta">
+  <span class="eyebrow">Falta pouco</span>
+  <h2>O seu casamento passa em um dia. A <em>memória dele</em> pode durar a vida inteira.</h2>
+  <p>Fale com a gente no WhatsApp. Contamos como funciona, mostramos os pacotes e reservamos a sua data.</p>
+  <a href="https://wa.me/5548999999999?text=Ol%C3%A1%2C%20vim%20pela%20LP%20e%20quero%20saber%20mais%20sobre%20a%20Inframe" class="cta-primary" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    Quero falar com a Inframe
+  </a>
+</section>
+
+<footer>
+  <div class="brand-mini">Inframe</div>
+  <div>Fotos instantâneas premium para casamentos e eventos · Florianópolis / SC</div>
+</footer>
+
+<a href="https://wa.me/5548999999999?text=Ol%C3%A1%2C%20vim%20pela%20LP%20e%20quero%20saber%20mais%20sobre%20a%20Inframe" class="float-wa" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+  (function() {
+    const track = document.getElementById('feedbackCarousel');
+    const prev = document.getElementById('prevBtn');
+    const next = document.getElementById('nextBtn');
+    if (!track) return;
+    const step = () => {
+      const first = track.querySelector('.feedback-card');
+      if (!first) return 400;
+      const gap = parseInt(getComputedStyle(track).gap) || 24;
+      return first.getBoundingClientRect().width + gap;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left:  step(), behavior: 'smooth' }));
+  })();
+</script>
+
+</body>
+</html>
